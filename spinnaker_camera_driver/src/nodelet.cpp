@@ -417,7 +417,7 @@ class SpinnakerCameraNodelet : public nodelet::Nodelet {
 
     ros::NodeHandle& nh = getMTNodeHandle();
     cam_imu_sub_ =
-        nh.subscribe("mavros/cam_imu_sync/cam_imu_stamp", 100,
+        nh.subscribe("/mavros/cam_imu_sync/cam_imu_stamp", 100,
                      &SpinnakerCameraNodelet::camImuStampCallback, this);
   }
 
@@ -427,12 +427,11 @@ class SpinnakerCameraNodelet : public nodelet::Nodelet {
     trigger_sequence_offset_ = 0;
 
     if (!multi_camera_mode_) {
-      const std::string mavros_trigger_service = "mavros/cmd/trigger_control";
+      const std::string mavros_trigger_service = "/mavros/cmd/trigger_control";
       if (ros::service::exists(mavros_trigger_service, false)) {
         mavros_msgs::CommandTriggerControl req;
         req.request.trigger_enable = true;
-        // This is NOT integration time, this is actually the sequence reset.
-        req.request.cycle_time = 1.0;
+        req.request.sequence_reset = true;
 
         ros::service::call(mavros_trigger_service, req);
 
