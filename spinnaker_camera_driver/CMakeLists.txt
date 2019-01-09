@@ -7,7 +7,7 @@ project(spinnaker_camera_driver)
 
 find_package(catkin REQUIRED COMPONENTS
   camera_info_manager diagnostic_updater dynamic_reconfigure
-  image_transport nodelet roscpp sensor_msgs)
+  image_transport nodelet roscpp sensor_msgs mavros_msgs)
 
 find_package(OpenCV REQUIRED)
 
@@ -16,7 +16,7 @@ generate_dynamic_reconfigure_options(
 )
 
 catkin_package(CATKIN_DEPENDS
-  nodelet roscpp sensor_msgs
+  nodelet roscpp sensor_msgs mavros_msgs
   DEPENDS OpenCV
 )
 
@@ -27,12 +27,13 @@ catkin_package(CATKIN_DEPENDS
 # contains them. We work around this by downloading the archive directly from
 # their website during this step in the build process.
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules")
-find_package(Spinnaker QUIET)
-if(NOT Spinnaker_LIBRARIES)
-  message(STATUS "libSpinnaker not found in system library path")
-  include(cmake/DownloadSpinnaker.cmake)
-  download_spinnaker(Spinnaker_LIBRARIES Spinnaker_INCLUDE_DIRS)
-endif()
+find_package(Spinnaker REQUIRED)
+
+#if(NOT Spinnaker_LIBRARIES)
+#  message(STATUS "libSpinnaker not found in system library path")
+#  include(cmake/DownloadSpinnaker.cmake)
+#  download_spinnaker(Spinnaker_LIBRARIES Spinnaker_INCLUDE_DIRS)
+#endif()
 
 message(STATUS "libSpinnaker library: ${Spinnaker_LIBRARIES}")
 message(STATUS "libSpinnaker include: ${Spinnaker_INCLUDE_DIRS}")
