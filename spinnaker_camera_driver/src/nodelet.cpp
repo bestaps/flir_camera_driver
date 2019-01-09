@@ -407,6 +407,7 @@ class SpinnakerCameraNodelet : public nodelet::Nodelet {
     config_.enable_trigger = "On";
     config_.trigger_activation_mode = "FallingEdge";
     config_.trigger_source = "Line3";
+    config_.trigger_overlap_mode = "ReadOut";
     paramCallback(config_, 0);
     srv_->updateConfig(config_);
     // Set these for now...
